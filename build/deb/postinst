@@ -1,0 +1,18 @@
+#!/bin/bash
+set -e
+
+echo "Running post-install script..."
+
+chown halmidiuser /usr/bin/halmidi
+chmod 700 /usr/bin/halmidi
+# chmod -R 755 /path/to/dir
+
+# Reload systemd to pick up new service file
+systemctl daemon-reexec
+systemctl daemon-reload
+
+APP_NAME="halmidi"
+# Enable and start your service
+systemctl enable --now $APP_NAME.service
+
+echo "Service $APP_NAME started and enabled."

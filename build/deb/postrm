@@ -1,0 +1,21 @@
+#!/bin/bash
+set -e
+
+SERVICE=halmidi
+
+echo "🧼 Cleaning up after uninstall..."
+
+# Stop and disable the systemd service
+if systemctl is-enabled --quiet $SERVICE 2>/dev/null; then
+    systemctl disable --now $SERVICE || true
+fi
+
+# Remove systemd unit if it exists
+rm -f /etc/systemd/system/$SERVICE.service
+
+# Reload systemd daemon
+systemctl daemon-reexec
+systemctl daemon-reload
+
+echo "✅ Uninstall cleanup complete."
+exit 0

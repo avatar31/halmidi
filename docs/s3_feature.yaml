@@ -1,0 +1,86 @@
+s3_features:
+  bucket_level:
+    object_locking:
+      required_at_creation: true
+      header: x-amz-bucket-object-lock-enabled
+      editable_after_creation: false
+      required_for_object_lock_usage: true
+
+    versioning:
+      configurable: true
+      api:
+        - method: PUT
+          path: /{bucket}?versioning
+          body:
+            VersioningConfiguration:
+              Status: Enabled | Suspended
+        - method: GET
+          path: /{bucket}?versioning
+      default_state: Disabled
+      supports_suspend_resume: true
+
+    default_retention:
+      optional: true
+      applies_if_no_retention_specified: true
+      api:
+        - PUT /{bucket}?object-lock
+        - GET /{bucket}?object-lock
+      structure:
+        ObjectLockConfiguration:
+          ObjectLockEnabled: Enabled
+          Rule:
+            DefaultRetention:
+              Mode: GOVERNANCE | COMPLIANCE
+              Days: int
+              Years: int
+
+  object_level:
+    versioning_behavior:
+      object_versions: true
+      version_id_response_header: x-amz-version-id
+      null_version_support: true
+
+    retention:
+      headers_required:
+        - x-amz-object-lock-mode
+        - x-amz-object-lock-retain-until-date
+      modes:
+        - GOVERNANCE
+        - COMPLIANCE
+      enforcement:
+        compliance_cannot_be_bypassed: true
+        governance_can_be_bypassed_with_header:
+          header: x-amz-bypass-governance-retention
+          value: true
+
+    legal_hold:
+      supported: true
+      scope: per-object-version
+      api:
+        put:
+          method: PUT
+          path: /{bucket}/{key}?legal-hold
+          body:
+            LegalHold:
+              Status: ON | OFF
+        get:
+          method: GET
+          path: /{bucket}/{key}?legal-hold
+      enforcement:
+        block_deletion_if_on: true
+        independent_of_retention: true
+
+    metadata:
+      system_metadata:
+        - Content-Length
+        - Content-Type
+        - Last-Modified
+        - ETag
+      user_metadata:
+        format: x-amz-meta-*
+        stored_per_version: true
+
+  unsupported_features:
+    bucket_level_legal_hold: false
+    retroactive_object_lock_enable: false
+    versioning_automerge: false

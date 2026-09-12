@@ -1,0 +1,12 @@
+{
+  "Rules": [
+    {
+      "Expiration": {
+        "Date": "2026-01-01T00:00:00.000Z"
+      },
+      "ID": "Delete 2014 logs in 2026.",
+      "Prefix": "logs/2014/",
+      "Status": "Enabled"
+    }
+  ]
+}

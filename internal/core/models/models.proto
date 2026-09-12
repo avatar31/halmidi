@@ -1,0 +1,224 @@
+syntax="proto3";
+
+option go_package = ".;models";
+
+message BucketMeta {
+    string uuid = 1;
+    string name = 2;
+    string creation_date = 3;
+    BucketVersioning versioning = 4;
+    BucketObjectLocking object_locking = 5;
+    TagMap tags = 6;
+    string arn = 7;
+    Owner owner = 8;
+    LifecycleConfig lifecycle_config = 9;
+}
+
+message TagMap {
+  map<string, string> items = 1;
+}
+
+message BucketVersioning {
+    string status = 1;
+}
+
+message BucketObjectLocking {
+    string object_lock_enabled = 1;
+    LockRule rule = 2;
+}
+
+message LockRule {
+    DefaultRetention default_retention = 1;
+}
+
+message DefaultRetention {
+    string mode = 1;
+    int32 days = 2;
+    int32 years = 3;
+}
+
+message Owner {
+    string id = 1;
+    string display_name = 2;
+}
+
+message LifecycleConfig {
+    repeated LifeCycleRule rules = 1;
+}
+
+message LifeCycleRule {
+    string id = 1;
+    string prefix = 2;
+    string status = 3;
+    Filter filter = 4;
+    Expiration expiration = 5;
+    NoncurrentVersionExpiration noncurrent_version_expiration = 6;
+    AbortIncompleteMultipartUpload abort_incomplete_multipart_upload = 7;
+}
+
+message Filter {
+    string prefix = 1;
+    Tag tag = 2;
+    int64 object_size_greater_than = 3;
+    int64 object_size_less_than = 4;
+    AndFilter and = 5;
+}
+
+message Tag {
+    string key = 1;
+    string value = 2;
+}
+
+message AndFilter {
+    repeated Tag tags = 1;
+    int64 object_size_greater_than = 2;
+    int64 object_size_less_than = 3;
+}
+
+message Expiration {
+    string date = 1;
+    int32 days = 2;
+    bool expired_object_delete_marker = 3;
+}
+
+message NoncurrentVersionExpiration {
+    int32 newer_noncurrent_versions = 1;
+    int32 noncurrent_days = 2;
+}
+
+message AbortIncompleteMultipartUpload {
+    int32 days_after_initiation = 1;
+}
+
+message ObjectMeta {
+    // S3 fields
+    string uuid = 1;
+    string key = 2;
+    uint64 size = 3;
+    string last_modified = 4;
+    string etag = 5;
+    string content_type = 6;
+    uint32 next_version_number = 7;
+    ObjectLock object_lock = 8;
+    TagMap tags = 9;
+    Owner owner = 10;
+    string arn = 11;
+    map<string, string> metadata = 12;  // x-amz-meta-* headers
+
+    // Internal Fields
+    int32 data_shards = 13;
+    int32 parity_shards = 14;
+    repeated Shard shards = 15; 
+}
+
+message ObjectLock {
+    optional string mode = 1;
+    optional string retain_until = 2;
+    optional string legal_hold_status = 3;
+}
+
+message Shard {
+    string type = 1;
+    string checksum = 2;
+    string path = 3;
+    int64 size = 4;
+}
+
+message ObjectVersion {
+    // S3 fields
+    string id = 1;
+    string name = 2;    // v<VersionNumber> i.e v1, v2 ...
+    string key = 3;
+    string last_modified = 4;
+    string etag = 5;
+    bool is_latest = 6;
+    optional bool is_delete_marker = 7;
+    uint64 size = 8;
+    ObjectLock object_lock = 9;
+    Owner owner = 10;
+
+    // Internal Fields
+    int32 data_shards = 11;
+    int32 parity_shards = 12;
+    repeated Shard shards = 13; 
+}
+
+message MultipartUploadPart {
+    string upload_id = 1;
+    int32 part_number = 2;
+    string etag = 3;
+    int64 size = 4;
+    string path = 5;
+    string last_modified = 6;
+}
+
+// TODO: Add content-type
+message MultipartUpload {
+    string uuid = 1;
+    string bucket = 2;
+    string key = 3;
+    string lock_mode = 4;
+    string retain_until = 5;
+    string legal_hold_status = 6;
+    Owner owner = 7;
+    Owner initiator = 8;
+    string initiated = 9;
+}
+
+message User {
+    string uuid = 1;
+    string name = 2;
+    string path = 3;
+    string arn = 4;
+    string create_date = 5;
+    string password_last_used = 6;
+    string permissions_boundary = 7;
+    TagMap tags = 8;
+}
+
+// TODO: Encrypt access and secret keys
+message UserAccessKey {
+    string user_name = 1;
+    string access_key_id = 2;
+    string secret_access_key = 3;
+    string status = 4;
+    string create_date = 5;
+}
+
+message AccessKeyLastUsed {
+    string last_used = 1;
+}
+
+message IAMPolicy {
+    string uuid = 1;
+    string name = 2;
+    string description = 3;
+    bool is_attachable = 4;
+    string path = 5;
+    string arn = 6;
+    string create_date = 7;
+    string default_version_id = 8;
+    string default_policy_document = 9;
+    TagMap tags = 10;
+    string update_date = 11;
+    int32 next_version_number = 12;
+    bool is_managed = 13;
+}
+
+message IAMPolicyVersion {
+    string version_id = 1;
+    string create_date = 2;
+    string document = 3;
+}
+
+message Group {
+    string uuid = 1;
+    string name = 2;
+    string path = 3;
+    string arn = 4;
+    string create_date = 5;
+}
+
+message ResourceRef {
+    string reference = 1;
+}

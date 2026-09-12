@@ -1,0 +1,114 @@
+{
+    "64K": {
+        "GET": {
+            "bwInBytes": 96993280,
+            "objPerSec": 1516.05
+        },
+        "PUT": {
+            "bwInBytes": 32505856,
+            "objPerSec": 507.69
+        },
+        "TOTAL": {
+            "bwInBytes": 128869990,
+            "objPerSec": 2356.19
+        }
+    },
+    "128K": {
+        "GET": {
+            "bwInBytes": 168925593,
+            "objPerSec": 1319.34
+        },
+        "PUT": {
+            "bwInBytes": 56203673,
+            "objPerSec": 439.2
+        },
+        "TOTAL": {
+            "bwInBytes": 224500121,
+            "objPerSec": 2046.22
+        }
+    },
+    "256K": {
+        "GET": {
+            "bwInBytes": 271161753,
+            "objPerSec": 1059.14
+        },
+        "PUT": {
+            "bwInBytes": 90072678,
+            "objPerSec": 352.05
+        },
+        "TOTAL": {
+            "bwInBytes": 361549004,
+            "objPerSec": 1645.42
+        }
+    },
+    "512K": {
+        "GET": {
+            "bwInBytes": 378850508,
+            "objPerSec": 739.87
+        },
+        "PUT": {
+            "bwInBytes": 125409689,
+            "objPerSec": 245.01
+        },
+        "TOTAL": {
+            "bwInBytes": 504574771,
+            "objPerSec": 1151.68
+        }
+    },
+    "1M": {
+        "GET": {
+            "bwInBytes": 442289356,
+            "objPerSec": 442.32
+        },
+        "PUT": {
+            "bwInBytes": 148373504,
+            "objPerSec": 148.38
+        },
+        "TOTAL": {
+            "bwInBytes": 596010598,
+            "objPerSec": 694.21
+        }
+    },
+    "2M": {
+        "GET": {
+            "bwInBytes": 514641100,
+            "objPerSec": 257.34
+        },
+        "PUT": {
+            "bwInBytes": 169554739,
+            "objPerSec": 84.79
+        },
+        "TOTAL": {
+            "bwInBytes": 678638387,
+            "objPerSec": 400.68
+        }
+    },
+    "4M": {
+        "GET": {
+            "bwInBytes": 601777766,
+            "objPerSec": 150.45
+        },
+        "PUT": {
+            "bwInBytes": 197027430,
+            "objPerSec": 49.25
+        },
+        "TOTAL": {
+            "bwInBytes": 783705702,
+            "objPerSec": 233.31
+        }
+    },
+    "8M": {
+        "GET": {
+            "bwInBytes": 582483968,
+            "objPerSec": 72.81
+        },
+        "PUT": {
+            "bwInBytes": 195769139,
+            "objPerSec": 24.47
+        },
+        "TOTAL": {
+            "bwInBytes": 785593139,
+            "objPerSec": 113.68
+        }
+    }
+}

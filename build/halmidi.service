@@ -1,0 +1,12 @@
+[Unit]
+Description=Halmidi
+After=network.target
+
+[Service]
+ExecStart=/usr/bin/halmidi start
+Restart=always
+RestartSec=10
+User=halmidiuser
+
+[Install]
+WantedBy=multi-user.target

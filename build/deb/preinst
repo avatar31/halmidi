@@ -1,0 +1,16 @@
+#!/bin/bash
+set -e
+
+echo "Running pre-install script..."
+
+USERNAME="halmidiuser"
+
+if ! id "$USERNAME" &>/dev/null; then
+    if ! useradd -r -s /sbin/nologin "$USERNAME" &>/dev/null; then
+        echo "Failed to create user."
+        exit 1
+    fi
+fi
+
+echo "✅ Preinstall checks are passed."
+exit 0
