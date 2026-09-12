@@ -1,0 +1,17 @@
+# Test files
+*.out
+*.html
+
+# Log files
+*.log
+
+# Build files
+rpmbuild
+halmidi-deb
+bin
+*.deb
+*.rpm
+
+# Warp
+*.json.zst
+warp-*.json

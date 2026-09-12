@@ -1,0 +1,136 @@
+# ============================================================================
+# Pre-commit configuration
+#
+# Purpose:
+#   Run automated checks before every commit so that broken, unformatted,
+#   or potentially unsafe code doesn't make it into the repository.
+#
+# Run all hooks manually:
+#   pre-commit run --all-files
+#
+# Run a specific hook:
+#   pre-commit run go-imports
+#   pre-commit run go-test-mod
+#   pre-commit run go-vet-mod
+# ============================================================================
+
+repos:
+  # ==========================================================================
+  # Generic repository checks
+  #
+  # These hooks are language-independent and help keep repository files
+  # consistent.
+  # ==========================================================================
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+
+      # Removes trailing whitespace from files.
+      - id: trailing-whitespace
+
+      # Ensures text files end with exactly one newline.
+      - id: end-of-file-fixer
+
+      # Validates YAML syntax.
+      - id: check-yaml
+
+      # Validates and formats JSON files.
+      - id: pretty-format-json
+
+
+  # ==========================================================================
+  # Go-specific checks
+  # ==========================================================================
+  - repo: https://github.com/tekwizely/pre-commit-golang
+    rev: v1.0.0-rc.4
+    hooks:
+      # Description:
+      #   Ensures go.mod and go.sum accurately represent the dependencies
+      #   used by the Go module.
+      #
+      #   Removes unused dependencies and adds missing dependencies.
+      #
+      # Final command:
+      #   go mod tidy
+      #
+      - id: go-mod-tidy
+
+      # Description:
+      #   Builds the Go module to ensure that all packages compile successfully.
+      #   This catches compilation errors before code is committed.
+      #
+      # Final command:
+      #   go build
+      #
+      - id: go-build-mod
+
+      # Description:
+      #   Runs tests for the Go module containing the staged Go files.
+      #   This prevents code that breaks existing tests from being committed.
+      #
+      # Final command:
+      #   go test ./...
+      #
+      - id: go-test-mod
+
+      # Description:
+      #   Runs Go's official static analyzer to detect suspicious or
+      #   potentially incorrect code constructs.
+      #
+      # Final command:
+      #   go vet ./...
+      #
+      - id: go-vet-mod
+
+      # Description:
+      #   Checks the Go module and its dependencies for known vulnerabilities
+      #   using Go's vulnerability database.
+      #
+      # Dependency:
+      #   govulncheck
+      #
+      # Final command:
+      #   govulncheck
+      #
+      # - id: go-vulncheck-mod
+
+      # Description:
+      #   Formats Go source files and manages their import statements.
+      #
+      #   It adds missing imports, removes unused imports, and organizes imports
+      #   according to Go conventions.
+      #
+      # Dependency:
+      #   goimports
+      #
+      # Final command:
+      #   goimports
+      #
+      - id: go-imports
+
+      # Description:
+      #   Runs multiple Go linters through a single tool to detect bugs,
+      #   suspicious code, unused code, error-handling issues, and other
+      #   quality problems.
+      #
+      # Dependency:
+      #   golangci-lint
+      #
+      # Final command:
+      #   golangci-lint run
+      #
+      - id: golangci-lint-mod
+
+      # Description:
+      #   Formats Go source files using gofumpt, which applies stricter formatting
+      #   rules than the standard gofmt formatter.
+      #   gofumpt is a stricter, more opinionated version of gofmt and helps keep
+      #   formatting consistent across the project.
+      #
+      # Dependency:
+      #   gofumpt
+      #
+      # Final command:
+      #   gofumpt
+      #
+      - id: go-fumpt
