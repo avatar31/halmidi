@@ -12,7 +12,8 @@ import (
 )
 
 const (
-	APP_NAME = "halmidi"
+	APP_NAME          = "halmidi"
+	DEFAULT_REST_PORT = 9051
 
 	CONFIG_FILE_PATH = "/etc/halmidi/halmidi.conf"
 	DEFAULT_LOG_PATH = "/var/log/halmidi"

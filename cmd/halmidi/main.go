@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"os/signal"
+	"runtime"
 	"runtime/debug"
 	"syscall"
 
@@ -12,6 +13,7 @@ import (
 	"go.uber.org/zap"
 	"golang.org/x/sys/unix"
 
+	"github.com/avatar31/halmidi/cmd/halmidi/rest"
 	"github.com/avatar31/halmidi/config"
 	"github.com/avatar31/halmidi/pkg/logger"
 )
@@ -23,6 +25,8 @@ const (
 )
 
 func main() {
+	runtime.SetBlockProfileRate(1)
+	runtime.SetMutexProfileFraction(1)
 	start()
 }
 
@@ -30,8 +34,7 @@ func start() {
 	ctx := context.Background()
 	defer func() {
 		if r := recover(); r != nil {
-			stack := debug.Stack()
-			logger.GetLogger(ctx).Error(fmt.Sprintf("PANIC RECOVERED - shutting down gracefully. %s", stack),
+			logger.GetLogger(ctx).Error("PANIC RECOVERED - shutting down gracefully. "+string(debug.Stack()),
 				zap.Any("panic", r))
 			gracefullyCloseAllResources(ctx)
 			os.Exit(1)
@@ -48,9 +51,12 @@ func start() {
 	ctx, stop := signal.NotifyContext(ctx, os.Interrupt, syscall.SIGTERM)
 	defer stop()
 
-	logger.InitLogger(ctx)
+	logger.InitLogger()
 	log := logger.GetLogger(ctx)
 	log.Info("Starting halmidi server")
+
+	// Init rest service
+	rest.InitRestService(ctx, config.DEFAULT_REST_PORT)
 
 	waitForShutdown(ctx)
 }
@@ -89,5 +95,8 @@ func waitForShutdown(ctx context.Context) {
 }
 
 func gracefullyCloseAllResources(ctx context.Context) {
+	// Close rest service gracefully
+	rest.Close(ctx)
+
 	logger.GetLogger(ctx).Info("Shutdown complete")
 }

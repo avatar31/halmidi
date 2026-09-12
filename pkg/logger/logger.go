@@ -16,10 +16,10 @@ type ctxKey struct{}
 var (
 	logKey    ctxKey
 	once      sync.Once
-	appLogger *zap.Logger
+	appLogger = zap.NewNop()
 )
 
-func InitLogger(ctx context.Context) {
+func InitLogger() {
 	once.Do(func() {
 		cfg := config.GetConfig()
 		if err := fileutils.CreateDirIfNotExists(cfg.Logging.Path); err != nil {
@@ -39,6 +39,6 @@ func GetLogger(ctx context.Context) *zap.Logger {
 	return appLogger
 }
 
-func WithContext(ctx context.Context, l *zap.Logger) context.Context {
-	return context.WithValue(ctx, logKey, l)
+func WithContext(ctx context.Context) context.Context {
+	return context.WithValue(ctx, logKey, appLogger)
 }
